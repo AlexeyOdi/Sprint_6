@@ -5,7 +5,10 @@ import urls
 import locators.base_page_locators as bpl
 import allure
 
-class MainPage:
+from pages.base_page import BasePage
+
+
+class MainPage(BasePage):
 
     question_1 = [By.XPATH, '//div[@id="accordion__heading-0"]/parent::div']
     answer_1 = [By.XPATH, '//div[@id="accordion__panel-0"]']
@@ -39,25 +42,21 @@ class MainPage:
     answer_8 = [By.XPATH, '//div[@id="accordion__panel-7"]']
     answer_text_8 = 'Да, обязательно. Всем самокатов! И Москве, и Московской области.'
 
-    def __init__(self, driver):
-        self.driver = driver
-
     @allure.step('Кликаем на вопрос')
     def click_question(self, question):
-        self.driver.find_element(*question).click()
+        self.click(question)
 
     @allure.step('Получаем текст фактического ответа')
     def get_answer_text(self, answer):
-        return self.driver.find_element(*answer).text
+        return self.get_text(answer)
 
     @allure.step('Прокручиваем страницу до самого низа')
     def sroll_to_down(self):
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+        self.scroll_to_down()
 
     @allure.step('Прокручиваем страницу до кнопки "заказать" в середине страницы')
     def scroll_to_home_order_button(self):
-        element = self.driver.find_element(*bpl.home_order_button)
-        self.driver.execute_script("arguments[0].scrollIntoView()", element)
+        self.scroll_to(bpl.home_order_button)
 
     @allure.step('Получаем текст ожидаемого ответа')
     def get_text_to_assert(self, answer_text):
@@ -65,19 +64,19 @@ class MainPage:
 
     @allure.step('Кликаем на кнопку "заказать" в шапке страницы')
     def click_header_order(self):
-        self.driver.find_element(*bpl.header_order_button).click()
+        self.click(bpl.header_order_button)
 
     @allure.step('Кликаем лого самоката')
     def click_scooter_logo(self):
-        self.driver.find_element(*bpl.scooter_logo).click()
+        self.click(bpl.scooter_logo)
 
     @allure.step('Кликаем лого Яндекс')
     def click_ya_logo(self):
-        self.driver.find_element(*bpl.ya_logo).click()
+        self.click(bpl.ya_logo)
 
     @allure.step('Кликаем кнопку "заказать" в середине страницы')
     def click_home_order_button(self):
-        self.driver.find_element(*bpl.home_order_button).click()
+        self.click(bpl.home_order_button)
 
     @allure.step('Сравниваем полученный текст ответа с ожидаемым')
     def assert_answers(self, expected_value, actual_value):
@@ -96,10 +95,10 @@ class MainPage:
         main_window_handler = self.driver.current_window_handle
         for window_handle in self.driver.window_handles:
             if window_handle != main_window_handler:
-                self.driver.switch_to.window(window_handle)
-                WebDriverWait(self.driver, 5).until(EC.presence_of_element_located((By.XPATH, '//div')))
+                self.switch_window(window_handle)
+                self.wait(bpl.ya_locator)
                 assert self.driver.current_url == urls.ya_page
-                self.driver.switch_to.window(main_window_handler)
+                self.switch_window(main_window_handler)
 
 
 

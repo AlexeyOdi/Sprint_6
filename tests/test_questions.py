@@ -20,7 +20,7 @@ class TestQuestions:
     @allure.title('Проверка правильности ответов на вопросы')
     def test_check_answer(self, question, answer, answer_text):
         test_main = MainPage(self.driver)
-        test_main.sroll_to_down()
+        test_main.scroll_to_down()
         test_main.click_question(question)
         expected_value = test_main.get_text_to_assert(answer_text)
         actual_value = test_main.get_answer_text(answer)
