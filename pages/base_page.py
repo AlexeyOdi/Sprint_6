@@ -34,3 +34,12 @@ class BasePage:
 
     def switch_window(self, handle):
         self.driver.switch_to.window(handle)
+
+    def get_current_url(self):
+        return self.driver.current_url
+
+    def get_current_window_handle(self):
+        return  self.driver.current_window_handle
+
+    def get_window_handles(self):
+        return  self.driver.window_handles

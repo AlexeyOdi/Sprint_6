@@ -84,20 +84,20 @@ class MainPage(BasePage):
 
     @allure.step('Проверяем, что после клика мы перешли на главную страницу самоката')
     def check_assert_scooter_logo(self):
-        assert self.driver.current_url == urls.main_page
+        assert self.get_current_url() == urls.main_page
 
     @allure.step('Проверяем, что после клика мы перешли на страницу оформления заказа')
     def check_assert_order_page(self):
-        assert self.driver.current_url == urls.order_page
+        assert self.get_current_url() == urls.order_page
 
     @allure.step('Проверяем, что после клика мы перешли на страницу Яндекс.Дзен')
     def check_assert_ya_logo(self):
-        main_window_handler = self.driver.current_window_handle
-        for window_handle in self.driver.window_handles:
+        main_window_handler = self.get_current_window_handle()
+        for window_handle in self.get_window_handles():
             if window_handle != main_window_handler:
                 self.switch_window(window_handle)
                 self.wait(bpl.ya_locator)
-                assert self.driver.current_url == urls.ya_page
+                assert self.get_current_url() == urls.ya_page
                 self.switch_window(main_window_handler)
 
 
